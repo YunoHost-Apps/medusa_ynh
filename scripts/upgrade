@@ -2,7 +2,7 @@
 
 	set -eu
 	app=$YNH_APP_INSTANCE_NAME
-	source="https://github.com/SickRage/SickRage"
+	source="https://github.com/pymedusa/Medusa"
 
 # Backup the current version of the app, restore it if the upgrade fails
 	EXIT_PROPERLY () {
