@@ -6,11 +6,11 @@
     "en": "Automatic TV shows downloader",
     "fr": "Téléchargement automatisé de séries TV"
   },
-  "url": "https://github.com/pymedusa/",
+  "url": "https://pymedusa.com/",
   "license": "free",
   "maintainer": {
-    "name": "scith",
-    "url": "https://github.com/scith"
+    "name": "",
+    "url": ""
   },
   "multi_instance": false,
   "services": [
@@ -24,16 +24,16 @@
       {
         "name": "domain",
         "ask": {
-          "en": "Choose a domain for SickRage",
-          "fr": "Choisissez un domaine pour SickRage"
+          "en": "Choose a domain for Medusa",
+          "fr": "Choisissez un domaine pour Medusa"
         },
         "example": "mydomain.org"
       },
       {
         "name": "path",
         "ask": {
-          "en": "Choose a path for SickRage",
-          "fr": "Choisissez un chemin pour SickRage"
+          "en": "Choose a path for Medusa",
+          "fr": "Choisissez un chemin pour Medusa"
         },
         "example": "/medusa",
         "default": "/medusa"

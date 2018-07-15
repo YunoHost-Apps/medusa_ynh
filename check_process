@@ -1,4 +1,4 @@
-;; Test Sickrage
+;; Test Medusa
     auto_remove=1
     ; Manifest
         domain="domain.tld"    (DOMAIN)
