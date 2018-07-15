@@ -2,7 +2,7 @@
 
 	set -eu
 	app=$YNH_APP_INSTANCE_NAME
-	source="https://github.com/SickRage/SickRage"
+	source="https://github.com/pymedusa/Medusa"
 
 
 # Source app helpers
@@ -35,7 +35,7 @@
 # Install Couchpotato
 
 	# Get first available port
-	port=7779
+	port=7780
 	sudo yunohost app checkport $port
 	while [[ ! $? -eq 0 ]]; do
 		port=$((port+1))
@@ -66,7 +66,7 @@
 		wget -qq https://github.com/YunoHost-Apps/yunohost.multimedia/archive/master.zip
 		unzip -qq master.zip
 		sudo ./yunohost.multimedia-master/script/ynh_media_build.sh
-		# Give write access to the yunohost.multimedia directory so that Sickrage can move Series to the Series directory
+		# Give write access to the yunohost.multimedia directory so that medusa can move Series to the Series directory
 		sudo usermod -a -G multimedia $app
 		# Creates the "Movies" subfolder in "Video"
 		sudo mkdir -p "/home/yunohost.multimedia/share/Video/Series"
@@ -79,44 +79,44 @@
 	transmission_watchdir=""
 	# Check if Transmission is installed
 	if [[ -z $(sudo yunohost app list -i -f transmission | grep -v 'apps:') ]]; then
-		sudo sed -i "s@__METHOD__@@g"	../conf/sickrage.conf	# Disable Transmission Blackhole and RPC
-		sudo sed -i "s@__RENAMER__@0@g"		../conf/sickrage.conf	# Disable Renamer
+		sudo sed -i "s@__METHOD__@@g"	../conf/medusa.conf	# Disable Transmission Blackhole and RPC
+		sudo sed -i "s@__RENAMER__@0@g"		../conf/medusa.conf	# Disable Renamer
 	else
 		echo "Transmission is installed. Trying to link it to CouchPotato..."
 		# Check if the transmission password is in settings
 		if [[ -n $(ynh_app_setting_get transmission rpcpassword || true) ]]; then
-			echo "Transmission will be linked to SickRage directly"
-			transmission_rpcurl="$(ynh_app_setting_get transmission path)transmission"
+			echo "Transmission will be linked to medusa directly"
+			transmission_rpcurl="$(ynh_app_setting_get transmission path)/transmission"
 			transmission_rpcpassword=$(ynh_app_setting_get transmission rpcpassword)
-			sudo sed -i "s@__METHOD__@transmission@g"			../conf/sickrage.conf	# Enable Transmission RPC
-			sudo sed -i "s@__RENAMER__@1@g"		../conf/sickrage.conf	# Enable Renamer
+			sudo sed -i "s@__METHOD__@transmission@g"			../conf/medusa.conf	# Enable Transmission RPC
+			sudo sed -i "s@__RENAMER__@1@g"		../conf/medusa.conf	# Enable Renamer
 			# If transmission uses YunoHost multimedia, use its folder for the renamer
 		else
 			# Check if transmission has watchdir enabled
 			if [[ -n $(ynh_app_setting_get transmission watchdir || true) ]]; then
-				echo "Transmission will be linked to SickRage with watchdir"
+				echo "Transmission will be linked to medusa with watchdir"
 				transmission_watchdir=$(ynh_app_setting_get transmission watchdir)
-				sudo sed -i "s@__METHOD__@blackhole@g"			../conf/sickrage.conf	# Enable Transmission Blackhole
-				sudo sed -i "s@__RENAMER__@1@g"		../conf/sickrage.conf	# Enable Renamer	
-				# If transmission uses YunoHost multimedia, use its folder for the renamer		
+				sudo sed -i "s@__METHOD__@blackhole@g"			../conf/medusa.conf	# Enable Transmission Blackhole
+				sudo sed -i "s@__RENAMER__@1@g"		../conf/medusa.conf	# Enable Renamer
+				# If transmission uses YunoHost multimedia, use its folder for the renamer
 			else
-				echo "Cannot link SickRage to Transmission because Transmission has no RPC password or watchdir available."
-				sudo sed -i "s@__METHOD__@@g"			../conf/sickrage.conf	# Disable Transmission Blackhole and RPC
-				sudo sed -i "s@__RENAMER__@0@g"		../conf/sickrage.conf	# Disable Renamer
+				echo "Cannot link medusa to Transmission because Transmission has no RPC password or watchdir available."
+				sudo sed -i "s@__METHOD__@@g"			../conf/medusa.conf	# Disable Transmission Blackhole and RPC
+				sudo sed -i "s@__RENAMER__@0@g"		../conf/medusa.conf	# Disable Renamer
 			fi
 		fi
 	fi
 
 	# Configure App
-	sudo sed -i "s@__RPCURL__@$transmission_rpcurl@g" 			../conf/sickrage.conf
-	sudo sed -i "s@__RPCPASSWORD__@$transmission_rpcpassword@g" ../conf/sickrage.conf
-	sudo sed -i "s@__WATCHDIR__@$transmission_watchdir@g" 		../conf/sickrage.conf
+	sudo sed -i "s@__RPCURL__@$transmission_rpcurl@g" 			../conf/medusa.conf
+	sudo sed -i "s@__RPCPASSWORD__@$transmission_rpcpassword@g" ../conf/medusa.conf
+	sudo sed -i "s@__WATCHDIR__@$transmission_watchdir@g" 		../conf/medusa.conf
 
-	sudo sed -i "s@__PATH__@$path@g" 							../conf/sickrage.conf
-	sudo sed -i "s@__PORT__@$port@g" 							../conf/sickrage.conf
-	sudo sed -i "s@__DATADIR__@$app_data_dir@g" 				../conf/sickrage.conf
+	sudo sed -i "s@__PATH__@$path@g" 							../conf/medusa.conf
+	sudo sed -i "s@__PORT__@$port@g" 							../conf/medusa.conf
+	sudo sed -i "s@__DATADIR__@$app_data_dir@g" 				../conf/medusa.conf
 
-	sudo cp -a ../conf/sickrage.conf $app_config_file
+	sudo cp -a ../conf/medusa.conf $app_config_file
 	
 	# Redirect logs directory
 	sudo mkdir -p $app_logs_dir

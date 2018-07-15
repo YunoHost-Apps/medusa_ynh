@@ -1,5 +1,5 @@
 [Unit]
-Description=SickRage application instance
+Description=Medusa application instance
 After=network.target
 
 [Service]

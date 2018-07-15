@@ -2,7 +2,7 @@
     auto_remove=1
     ; Manifest
         domain="domain.tld"    (DOMAIN)
-        path="/sickrage"    (PATH)"
+        path="/medusa"    (PATH)"
     ; Checks
         pkg_linter=1
         setup_sub_dir=1

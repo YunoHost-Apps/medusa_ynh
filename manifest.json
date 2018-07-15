@@ -1,12 +1,12 @@
 {
   "packaging_format": 1,
-  "name": "SickRage",
-  "id": "sickrage",
+  "name": "Medusa",
+  "id": "medusa",
   "description": {
     "en": "Automatic TV shows downloader",
     "fr": "Téléchargement automatisé de séries TV"
   },
-  "url": "https://sickrage.github.io/",
+  "url": "https://github.com/pymedusa/",
   "license": "free",
   "maintainer": {
     "name": "scith",
@@ -35,8 +35,8 @@
           "en": "Choose a path for SickRage",
           "fr": "Choisissez un chemin pour SickRage"
         },
-        "example": "/sickrage",
-        "default": "/sickrage"
+        "example": "/medusa",
+        "default": "/medusa"
       }
     ]
   }
