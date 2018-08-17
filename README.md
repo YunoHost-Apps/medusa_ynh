@@ -10,7 +10,7 @@ Download TV shows automatically, easily and in the best quality as soon as they 
 ### How to install:
 - Use **Install software** option from Yunohost admin panel
 - Find textbox tagged as **Install custom App from github**
-- Copy and paste: https://github.com/YunoHost-Apps/medusa_ynh
+- Copy and paste: https://github.com/guigot/medusa_ynh
 
 
 ### More information about:
