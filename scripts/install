@@ -44,7 +44,7 @@ ynh_webpath_register --app=$app --domain=$domain --path_url=$path_url
 #=================================================
 # STORE SETTINGS FROM MANIFEST
 #=================================================
-ynh_script_progression --message="Storing installation settings..." --time --weight=1
+ynh_script_progression --message="Storing installation settings..." --weight=1
 
 ynh_app_setting_set --app=$app --key=domain --value=$domain
 ynh_app_setting_set --app=$app --key=path --value=$path_url
@@ -54,26 +54,21 @@ ynh_app_setting_set --app=$app --key=path --value=$path_url
 #=================================================
 # FIND AND OPEN A PORT
 #=================================================
-ynh_script_progression --message="Finding an available port..." --time --weight=1
+ynh_script_progression --message="Finding an available port..." --weight=1
 
 # Find an available port
 port=$(ynh_find_port --port=8095)
 ynh_app_setting_set --app=$app --key=port --value=$port
 
 
-
-
-
 # Destinations definitions
-	app_data_dir="/home/yunohost.app/$app"
-	app_logs_dir="/var/log/$app"
-	app_config_file="${app_data_dir}/settings.conf"
-	app_pid_file="/var/run/$app/$app.pid"
-	app_python_bin="/usr/bin/python"
+app_config_file="${app_data_dir}/settings.conf"
+app_pid_file="/var/run/$app/$app.pid"
 
-	# Make directories
-	mkdir -p $app_data_dir
 
+app_data_dir="/home/yunohost.app/$app"
+# Make directories
+mkdir -p $app_data_dir
 
 #=================================================
 # SPECIFIC SETUP
@@ -153,15 +148,15 @@ chown $app:$app "$final_path/settings.conf"
 #=================================================
 
 # Redirect logs directory
-mkdir -p $app_logs_dir
-chown -R $app $app_logs_dir
-chmod +x -R $app_logs_dir
-sed -i "s@self.log_dir =.*@self.log_dir = '$app_logs_dir'@g" $app_install_dir/SickBeard.py
+mkdir -p "/var/log/$app"
+chown -R $app "/var/log/$app"
+chmod +x -R "/var/log/$app"
+#sed -i "s@self.log_dir =.*@self.log_dir = '$app_logs_dir'@g" $app_install_dir/SickBeard.py
 
 #=================================================
 # SETUP SYSTEMD
 #=================================================
-ynh_script_progression --message="Configuring a systemd service..." --time --weight=1
+ynh_script_progression --message="Configuring a systemd service..." --weight=2
 
 # Create a dedicated systemd config
 ynh_add_systemd_config
@@ -169,9 +164,7 @@ ynh_add_systemd_config
 #=================================================
 # NGINX CONFIGURATION
 #=================================================
-ynh_script_progression --message="Configuring NGINX web server..." --time --weight=1
-
-### `ynh_add_nginx_config` will use the file conf/nginx.conf
+ynh_script_progression --message="Configuring NGINX web server..." --weight=3
 
 # Create a dedicated NGINX config
 ynh_add_nginx_config
@@ -179,7 +172,7 @@ ynh_add_nginx_config
 #=================================================
 # SETUP SSOWAT
 #=================================================
-ynh_script_progression --message="Configuring permissions..." --time --weight=1
+ynh_script_progression --message="Configuring permissions..." --weight=3
 
 # Make app public if necessary
 if [ $is_public -eq 1 ]
@@ -190,7 +183,7 @@ fi
 #=================================================
 # RELOAD NGINX
 #=================================================
-ynh_script_progression --message="Reloading NGINX web server..." --time --weight=1
+ynh_script_progression --message="Reloading NGINX web server..." --weight=1
 
 ynh_systemd_action --service_name=nginx --action=reload
 
@@ -198,4 +191,4 @@ ynh_systemd_action --service_name=nginx --action=reload
 # END OF SCRIPT
 #=================================================
 
-ynh_script_progression --message="Installation of $app completed" --time --last
+ynh_script_progression --message="Installation of $app completed" --last
