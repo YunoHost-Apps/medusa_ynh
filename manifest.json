@@ -1,43 +1,52 @@
 {
-  "name": "Medusa",
-  "id": "medusa",
-  "packaging_format": 1,
-  "description": {
-    "en": "Automatic TV shows downloader",
-    "fr": "Téléchargement automatisé de séries TV"
-  },
-  "url": "https://pymedusa.com/",
-  "license": "free",
-  "maintainer": {
-    "name": "",
-    "url": ""
-  },
-  "multi_instance": false,
-  "services": [
-    "nginx"
-  ],
-  "requirements": {
-    "yunohost": ">= 4.2.4"
-  },
-  "arguments": {
-    "install": [
-      {
-        "name": "domain",
-        "ask": {
-          "en": "Choose a domain for Medusa",
-          "fr": "Choisissez un domaine pour Medusa"
-        },
-        "example": "mydomain.org"
-      },
-      {
-        "name": "path",
-        "ask": {
-          "en": "Choose a path for Medusa",
-          "fr": "Choisissez un chemin pour Medusa"
-        },
-        "example": "/medusa",
-        "default": "/medusa"
-      }
-    ]
-  }
+    "name": "Example app",
+    "id": "example",
+    "packaging_format": 1,
+    "description": {
+        "en": "Automatic TV shows downloader",
+        "fr": "Téléchargement automatisé de séries TV"
+    },
+    "version": "0.5.12~ynh1",
+    "url": "https://example.com",
+    "upstream": {
+        "license": "GPL-3.0 License",
+        "website": "https://pymedusa.com/",
+        "code": "https://github.com/pymedusa/Medusa"
+    },
+    "license": "GPL-3.0 License",
+    "maintainer": {
+        "name": ""
+    },
+    "requirements": {
+        "yunohost": ">= 4.2.4"
+    },
+    "multi_instance": false,
+    "services": [
+        "nginx"
+    ],
+    "arguments": {
+        "install" : [
+            {
+                "name": "domain",
+                "type": "domain",
+                "example": "example.com"
+            },
+            {
+                "name": "path",
+                "type": "path",
+                "example": "/medusa",
+                "default": "/medusa"
+            },
+            {
+                "name": "admin",
+                "type": "user",
+                "example": "johndoe"
+            },
+            {
+                "name": "is_public",
+                "type": "boolean",
+                "default": true
+            }
+        ]
+    }
 }
