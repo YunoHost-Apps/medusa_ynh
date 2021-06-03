@@ -5,7 +5,7 @@
 #=================================================
 
 # dependencies used by the app
-pkg_dependencies="python-pip python-virtualenv python-dev uwsgi uwsgi-plugin-python"
+pkg_dependencies="python-pip python3-venv python-dev uwsgi uwsgi-plugin-python"
 
 #=================================================
 # PERSONAL HELPERS

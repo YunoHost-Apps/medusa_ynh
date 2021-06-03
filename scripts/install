@@ -62,6 +62,8 @@ ynh_app_setting_set --app=$app --key=port --value=$port
 
 
 
+
+
 # Destinations definitions
 	app_data_dir="/home/yunohost.app/$app"
 	app_logs_dir="/var/log/$app"
@@ -78,7 +80,7 @@ ynh_app_setting_set --app=$app --key=port --value=$port
 #=================================================
 # INSTALL MEDUSA IN A VIRTUALENV
 #=================================================
-ynh_script_progression --message="Installing Searx..." --weight=2
+ynh_script_progression --message="Installing $app..." --weight=2
 
 python3 -m venv --system-site-packages "$final_path"
 set +u; source $final_path/bin/activate; set -u
@@ -86,8 +88,6 @@ pip3 install -U pip
 pip3 install -U cheetah
 pip3 install --requirement $final_path/requirements-ynh.txt
 python3 $final_path/start.py -d
-
-
 
 #=================================================
 # INSTALL MULTIMEDIA DIR
@@ -120,21 +120,21 @@ ynh_multimedia_addaccess --user_name=$app
 			echo "Transmission will be linked to medusa directly"
 			transmission_rpcurl="$(ynh_app_setting_get transmission path)/transmission"
 			transmission_rpcpassword=$(ynh_app_setting_get transmission rpcpassword)
-			sudo sed -i "s@__METHOD__@transmission@g"			../conf/medusa.conf	# Enable Transmission RPC
-			sudo sed -i "s@__RENAMER__@1@g"		../conf/medusa.conf	# Enable Renamer
+			sudo sed -i "s@__METHOD__@transmission@g"	../conf/medusa.conf	# Enable Transmission RPC
+			sudo sed -i "s@__RENAMER__@1@g"	../conf/medusa.conf	# Enable Renamer
 			# If transmission uses YunoHost multimedia, use its folder for the renamer
 		else
 			# Check if transmission has watchdir enabled
 			if [[ -n $(ynh_app_setting_get transmission watchdir || true) ]]; then
 				echo "Transmission will be linked to medusa with watchdir"
 				transmission_watchdir=$(ynh_app_setting_get transmission watchdir)
-				sudo sed -i "s@__METHOD__@blackhole@g"			../conf/medusa.conf	# Enable Transmission Blackhole
-				sudo sed -i "s@__RENAMER__@1@g"		../conf/medusa.conf	# Enable Renamer
+				sudo sed -i "s@__METHOD__@blackhole@g"	../conf/medusa.conf	# Enable Transmission Blackhole
+				sudo sed -i "s@__RENAMER__@1@g"	../conf/medusa.conf	# Enable Renamer
 				# If transmission uses YunoHost multimedia, use its folder for the renamer
 			else
 				echo "Cannot link medusa to Transmission because Transmission has no RPC password or watchdir available."
-				sudo sed -i "s@__METHOD__@@g"			../conf/medusa.conf	# Disable Transmission Blackhole and RPC
-				sudo sed -i "s@__RENAMER__@0@g"		../conf/medusa.conf	# Disable Renamer
+				sudo sed -i "s@__METHOD__@@g"	../conf/medusa.conf	# Disable Transmission Blackhole and RPC
+				sudo sed -i "s@__RENAMER__@0@g"	../conf/medusa.conf	# Disable Renamer
 			fi
 		fi
 	fi
@@ -144,20 +144,19 @@ ynh_multimedia_addaccess --user_name=$app
 #=================================================
 ynh_script_progression --message="Adding a configuration file..." --time --weight=1
 
-ynh_add_config --template="../conf/medusa.conf" --destination="$app_data_dir/settings.conf"
-chmod 400 "$final_path/some_config_file"
-chown $app:$app "$final_path/some_config_file"
+ynh_add_config --template="../conf/medusa.conf" --destination="$final_path/settings.conf"
+chmod 400 "$final_path/settings.conf"
+chown $app:$app "$final_path/settings.conf"
 
+#=================================================
+# SETUP SYSTEMD
+#=================================================
 
-
-	
-	# Redirect logs directory
-	sudo mkdir -p $app_logs_dir
-	sudo chown -R $app $app_logs_dir
-	sudo chmod +x -R $app_logs_dir
-	sudo sed -i "s@self.log_dir =.*@self.log_dir = '$app_logs_dir'@g" $app_install_dir/SickBeard.py
-
-
+# Redirect logs directory
+mkdir -p $app_logs_dir
+chown -R $app $app_logs_dir
+chmod +x -R $app_logs_dir
+sed -i "s@self.log_dir =.*@self.log_dir = '$app_logs_dir'@g" $app_install_dir/SickBeard.py
 
 #=================================================
 # SETUP SYSTEMD
