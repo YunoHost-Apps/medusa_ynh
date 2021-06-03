@@ -1,6 +1,6 @@
 {
-    "name": "Example app",
-    "id": "example",
+    "name": "Medusa",
+    "id": "medusa",
     "packaging_format": 1,
     "description": {
         "en": "Automatic TV shows downloader",
