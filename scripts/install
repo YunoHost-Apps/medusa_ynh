@@ -63,6 +63,10 @@ ynh_app_setting_set --app=$app --key=port --value=$port
 
 
 
+
+
+
+
 # Destinations definitions
 	app_data_dir="/home/yunohost.app/$app"
 	app_logs_dir="/var/log/$app"
@@ -76,31 +80,41 @@ ynh_app_setting_set --app=$app --key=port --value=$port
 	mkdir -p $app_data_dir
 	mkdir -p $app_install_dir
 	
-	# Install latest version of app using the fork
-	sudo git clone $source $app_install_dir
-	
-	# Install dependencies (using virtualenv)
-	if [[ $(python --version 2>&1) != Python\ 2* ]]; then
-		app_python_bin=$app_install_dir/bin/python
-		sudo apt-get install -y python-pip python-virtualenv python-dev uwsgi uwsgi-plugin-python
-		sudo virtualenv $app_install_dir
-		sudo bash -c "source $app_install_dir/bin/activate && pip install cheetah"
-	fi
-	
-	# Create app user
-	id -u $app &>/dev/null || sudo useradd --home-dir $app_install_dir --shell /bin/false $app
+
+
+#=================================================
+# SPECIFIC SETUP
+#=================================================
+# INSTALL SEARX IN A VIRTUALENV
+#=================================================
+ynh_script_progression --message="Installing Searx..." --weight=2
+
+python3 -m venv --system-site-packages "$final_path"
+set +u; source $final_path/bin/activate; set -u
+pip3 install -U pip
+pip3 install -U cheetah
+pip3 install --requirement $final_path/requirements-ynh.txt
+python3 $final_path/start.py -d
+
+
+
+
+
 
 	# YunoHost multimedia
 		# Add yunohost.multimedia directory
 		wget -qq https://github.com/YunoHost-Apps/yunohost.multimedia/archive/master.zip
 		unzip -qq master.zip
-		sudo ./yunohost.multimedia-master/script/ynh_media_build.sh
+		./yunohost.multimedia-master/script/ynh_media_build.sh
 		# Give write access to the yunohost.multimedia directory so that medusa can move Series to the Series directory
-		sudo usermod -a -G multimedia $app
+		usermod -a -G multimedia $app
 		# Creates the "Movies" subfolder in "Video"
-		sudo mkdir -p "/home/yunohost.multimedia/share/Video/Series"
+		mkdir -p "/home/yunohost.multimedia/share/Video/Series"
 		# Fix permissions
-		sudo ./yunohost.multimedia-master/script/ynh_media_build.sh
+		./yunohost.multimedia-master/script/ynh_media_build.sh
+
+
+
 
 	# Transmission link: Preferred method is direct RPC link. If not available, switch to watchdir.
 	transmission_rpcurl=""
@@ -156,10 +170,6 @@ chown $app:$app "$final_path/some_config_file"
 
 
 
-	# Permissions
-	sudo chown -R $app:$app $app_install_dir
-	sudo chown -R $app:$app $app_data_dir
-	
 #=================================================
 # SETUP SYSTEMD
 #=================================================
