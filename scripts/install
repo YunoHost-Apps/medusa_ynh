@@ -62,11 +62,6 @@ ynh_app_setting_set --app=$app --key=port --value=$port
 
 
 
-
-
-
-
-
 # Destinations definitions
 	app_data_dir="/home/yunohost.app/$app"
 	app_logs_dir="/var/log/$app"
@@ -74,18 +69,14 @@ ynh_app_setting_set --app=$app --key=port --value=$port
 	app_pid_file="/var/run/$app/$app.pid"
 	app_python_bin="/usr/bin/python"
 
-
-	
 	# Make directories
 	mkdir -p $app_data_dir
-	mkdir -p $app_install_dir
-	
 
 
 #=================================================
 # SPECIFIC SETUP
 #=================================================
-# INSTALL SEARX IN A VIRTUALENV
+# INSTALL MEDUSA IN A VIRTUALENV
 #=================================================
 ynh_script_progression --message="Installing Searx..." --weight=2
 
@@ -98,16 +89,14 @@ python3 $final_path/start.py -d
 
 
 
+#=================================================
+# INSTALL MULTIMEDIA DIR
+#=================================================
+
+ynh_multimedia_build_main_dir
+ynh_multimedia_addaccess --user_name=$app
 
 
-
-	# YunoHost multimedia
-		# Add yunohost.multimedia directory
-		wget -qq https://github.com/YunoHost-Apps/yunohost.multimedia/archive/master.zip
-		unzip -qq master.zip
-		./yunohost.multimedia-master/script/ynh_media_build.sh
-		# Give write access to the yunohost.multimedia directory so that medusa can move Series to the Series directory
-		usermod -a -G multimedia $app
 		# Creates the "Movies" subfolder in "Video"
 		mkdir -p "/home/yunohost.multimedia/share/Video/Series"
 		# Fix permissions
