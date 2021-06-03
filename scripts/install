@@ -69,7 +69,6 @@ ynh_install_app_dependencies $pkg_dependencies
 
 
 # Destinations definitions
-app_config_file="${app_data_dir}/settings.conf"
 app_pid_file="/var/run/$app/$app.pid"
 
 
@@ -146,9 +145,9 @@ ynh_multimedia_addaccess --user_name=$app
 #=================================================
 ynh_script_progression --message="Adding a configuration file..." --time --weight=1
 
-ynh_add_config --template="../conf/medusa.conf" --destination="$final_path/settings.conf"
-chmod 400 "$final_path/settings.conf"
-chown $app:$app "$final_path/settings.conf"
+ynh_add_config --template="../conf/medusa.conf" --destination="$app_data_dir/settings.conf"
+chmod 400 "$app_data_dir/settings.conf"
+chown $app:$app "$app_data_dir/settings.conf"
 
 #=================================================
 # SETUP SYSTEMD
