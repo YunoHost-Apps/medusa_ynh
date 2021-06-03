@@ -3,10 +3,13 @@ Description=Medusa application instance
 After=network.target
 
 [Service]
-ExecStart=__PYTHON__ __APPDIR__/SickBeard.py --quiet --pidfile=__PIDFILE__ --datadir=__DATADIR__ --config=__CONFIGFILE__
 Type=simple
 User=__USER__
 Group=__USER__
+ExecStart=/usr/bin/python3 __FINALPATH__/start.py --quiet --pidfile=__PIDFILE__ --datadir=__DATADIR__ --config=__CONFIGFILE__
+TimeoutStopSec=25
+KillMode=process
+Restart=on-failure
 
 [Install]
 WantedBy=multi-user.target

@@ -1,0 +1,7 @@
+SOURCE_URL=https://github.com/pymedusa/Medusa/archive/refs/tags/v0.5.12.tar.gz
+SOURCE_SUM=337dda9b995a5651f0a47225cfca22059c65b39c0d3858e33c09fa7b75ee37cd
+SOURCE_SUM_PRG=sha256sum
+SOURCE_FORMAT=tar.gz
+SOURCE_IN_SUBDIR=true
+SOURCE_FILENAME=
+SOURCE_EXTRACT=true
