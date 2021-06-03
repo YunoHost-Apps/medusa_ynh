@@ -17,6 +17,10 @@ Téléchargement automatisé de séries TV
 
 
 
+## Captures d'écran
+
+![](./doc/screenshots/home.jpg)
+
 ## Documentations et ressources
 
 * Site officiel de l'app : https://pymedusa.com/

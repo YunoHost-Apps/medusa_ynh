@@ -32,6 +32,10 @@ Automatic TV shows downloader
 
 
 
+## Screenshots
+
+![](./doc/screenshots/home.jpg)
+
 ## Documentation and resources
 
 * Official app website: https://pymedusa.com/
